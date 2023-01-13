@@ -69,6 +69,18 @@ server.use('/dashboard', async function (req, res, next) {
     }
 }
 );
+server.use('/', async function (req, res, next) {
+    try {
+        var cookie = req.cookies
+      
+        if (verifyToken(cookie.token) == null) return res.status(402).redirect("/")
+        else return res.redirect("/dashboard")
+    } catch (e) {
+        
+        next()
+    }
+}
+);
 
 server.get('/dashboard', async function (req, res) {
 
