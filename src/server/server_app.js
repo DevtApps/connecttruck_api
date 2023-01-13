@@ -57,10 +57,6 @@ server.use('/dashboard', async function (req, res, next) {
     try {
         var cookie = req.cookies
       
-
-        console.log(cookie)
-      
-        console.log(verifyToken(cookie.token))
         if (verifyToken(cookie.token) == null) return res.status(402).redirect("/")
         else next()
     } catch (e) {
@@ -69,18 +65,7 @@ server.use('/dashboard', async function (req, res, next) {
     }
 }
 );
-server.use('/', async function (req, res, next) {
-    try {
-        var cookie = req.cookies
-      
-        if (verifyToken(cookie.token) == null) return res.status(402).redirect("/")
-        else return res.redirect("/dashboard")
-    } catch (e) {
-        
-        next()
-    }
-}
-);
+
 
 server.get('/dashboard', async function (req, res) {
 
@@ -92,7 +77,7 @@ server.get('/dashboard', async function (req, res) {
 server.post('/message/partner', function (req, res) {
     try{
     var apikey = req.headers['x-api-key']
-    console.log(req.body)
+   
     if (apikey == process.env.API_KEY) {
         var { partner, number } = req.body
 
@@ -118,14 +103,29 @@ server.post('/message/partner', function (req, res) {
     }
 });
 
-server.get('/', async function (req, res) {
+function onLogged(req, res, next){
+    try {
+        var cookie = req.cookies
+
+      
+        
+        if ( cookie.token != null && verifyToken(cookie.token) != null)
+        return res.redirect("/dashboard")
+        else next()
+    } catch (e) {
+        
+        next()
+    }
+}
+
+server.get('/',onLogged, async function (req, res) {
     res.render("login", { sucess: true })
 });
 
 server.post('/login', async function (req, res) {
     try{
     var { email, password } = req.body;
-    console.log(req.body)
+   
     email = email.toString().replace("'", "").replace("*", "").replace(",", "");
 
     password = password.toString().replace("'", "").replace("*", "").replace(",", "");
