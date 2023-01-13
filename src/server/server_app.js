@@ -130,7 +130,7 @@ server.post('/login', async function (req, res) {
 
     password = password.toString().replace("'", "").replace("*", "").replace(",", "");
 
-    if (email == process.env.EMAIl && password == process.env.PASSWORD) {
+    if (email == process.env.EMAIL && password == process.env.PASSWORD) {
         res.clearCookie("token")
         res.cookie("token", createJWT()).redirect("/dashboard")
     } else {
