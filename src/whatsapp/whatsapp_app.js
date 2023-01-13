@@ -2,6 +2,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const realm = require('../database/realm_app');
 var qrcode = require("qrcode")
+var os = require("child_process")
 
 var eventManager = require("./../events/event_manager")
 
@@ -72,7 +73,18 @@ eventManager.on("logout", async () => {
 
     await client.logout()
     await client.destroy()
-    client.initialize()
+   
+    setTimeout(() => {
+        os.exec("pm2 restart app.js", (e)=>{
+            setTimeout(() => {
+                os.exec("pm2 restart app.js")
+            }, 5000);
+           
+        })
+    }, 1000);
+   
+    
+    
 })
 eventManager.on("send message", async (data) => {
   var user = await client.getNumberId(data.number)
