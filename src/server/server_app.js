@@ -102,6 +102,26 @@ server.post('/message/partner', function (req, res) {
         res.status(500).send()
     }
 });
+server.post('/message/user', function (req, res) {
+    try{
+    var apikey = req.headers['x-api-key']
+   
+    if (apikey == process.env.API_KEY) {
+        var { message, number } = req.body
+
+        var data = {
+            number: number,
+            message:message
+        }
+        event_manager.emit("send message", data)
+        res.send()
+    }
+    else res.status(402).send({ message: "Usuário não autenticado" });
+    }catch(e){
+        console.log(e)
+        res.status(500).send()
+    }
+});
 
 function onLogged(req, res, next){
     try {
