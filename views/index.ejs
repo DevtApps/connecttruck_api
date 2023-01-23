@@ -170,7 +170,7 @@
             "transports" : ["websocket"]
         };
 
-        this.socket = io.connect('ws://185.235.130.158:4000',connectionOptions);
+        this.socket = io.connect('ws://localhost:4000',connectionOptions);
 
         var center = document.getElementsByClassName("center")[0]
         socket.on("status",(data)=>{

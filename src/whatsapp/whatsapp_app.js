@@ -1,5 +1,5 @@
 
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, Buttons, MessageMedia } = require('whatsapp-web.js');
 const realm = require('../database/realm_app');
 var qrcode = require("qrcode")
 var os = require("child_process")
@@ -61,7 +61,7 @@ client.on('message', async msg => {
     console.log(msg.from)
     if (msg.body == '!ping') {
         msg.reply('pong');
-       
+
         console.log(id)
         var result = await client.sendMessage(msg.from, "Hello, if your receive this message, sorry! delete this. It´s a software test")
         console.log(result)
@@ -73,23 +73,49 @@ eventManager.on("logout", async () => {
 
     await client.logout()
     await client.destroy()
-   
+
     setTimeout(() => {
-        os.exec("pm2 restart app.js", (e)=>{
+        os.exec("pm2 restart app.js", (e) => {
             setTimeout(() => {
                 os.exec("pm2 restart app.js")
             }, 5000);
-           
+
         })
     }, 1000);
-   
-    
-    
+
+
+
 })
+
+
 eventManager.on("send message", async (data) => {
-  var user = await client.getNumberId(data.number)
-  if(user != null)
-  client.sendMessage(user._serialized, data.message)
+    var user = await client.getNumberId(data.number)
+    if (user != null)
+        client.sendMessage(user._serialized, data.message)
+})
+
+eventManager.on("send image", async (data) => {
+    var user = await client.getNumberId(data.number)
+    if (user != null) {
+        if (data.image != null && data.image.toString().length > 0) {
+            var media = new MessageMedia('image/png', data.image);
+
+            await client.sendMessage(user._serialized, media, { caption: data.message })
+        }else{
+            await client.sendMessage(user._serialized, data.message)
+        }
+
+    }
+})
+
+eventManager.on("send teste", async (data) => {
+    var user = await client.getNumberId(data.number)
+    if (user != null) {
+        var media = new MessageMedia('image/png', data.image);
+
+        await client.sendMessage(user._serialized, media, { caption: "Visite nosso parceiro TANAKA TRUCK CENTER\nSaiba mais no link abaixo\n\nrotasconnecttruck://parceiros" })
+
+    }
 })
 
 module.exports = client;
