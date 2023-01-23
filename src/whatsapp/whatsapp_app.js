@@ -108,14 +108,5 @@ eventManager.on("send image", async (data) => {
     }
 })
 
-eventManager.on("send teste", async (data) => {
-    var user = await client.getNumberId(data.number)
-    if (user != null) {
-        var media = new MessageMedia('image/png', data.image);
-
-        await client.sendMessage(user._serialized, media, { caption: "Visite nosso parceiro TANAKA TRUCK CENTER\nSaiba mais no link abaixo\n\nrotasconnecttruck://parceiros" })
-
-    }
-})
 
 module.exports = client;
