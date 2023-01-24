@@ -124,7 +124,7 @@ function onLogged(req, res, next){
         
         var cookie = req.cookies
         if ( cookie.token != null && verifyToken(cookie.token) != null)
-        if(req.path == "/login" || req.path == "/") return  res.redirect("/dashboard")
+        return  res.redirect("/dashboard")
         else next()
     } catch (e) {
         
