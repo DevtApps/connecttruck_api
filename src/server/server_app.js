@@ -82,7 +82,7 @@ server.post('/message/partner', function (req, res) {
         var { partner, number } = req.body
 
         var message = "";
-        message += "Visite nosso parceiro " + partner.nome + "!\n\nSaiba mais no link abaixo:\n\n";
+        message += "Visite nosso parceiro " + partner.nome + "!\n\nSaiba mais no link abaixo:\n\nhttps://connecttruck.page.link/parceiros";
 
         var data = {
             number: number,
