@@ -25,10 +25,11 @@ const io = new Server(ioserver, {
     }
 });
 // parse application/x-www-form-urlencoded
-server.use(bodyParser.urlencoded({ extended: false }))
+
+server.use(bodyParser.urlencoded({ extended: false, limit:"10mb" }))
 server.use(cookieParser())
 // parse application/json
-server.use(bodyParser.json())
+server.use(bodyParser.json({limit:"10mb"}))
 
 
 io.on("connection", (socket) => {
