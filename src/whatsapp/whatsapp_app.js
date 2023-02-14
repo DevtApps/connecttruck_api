@@ -71,8 +71,13 @@ client.on('message', async msg => {
 client.initialize();
 eventManager.on("logout", async () => {
 
+    try{
     await client.logout()
     await client.destroy()
+
+    }catch(e){
+        
+    }
 
     setTimeout(() => {
         os.exec("pm2 restart app.js", (e) => {
