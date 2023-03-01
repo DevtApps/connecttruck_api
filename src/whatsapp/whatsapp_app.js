@@ -94,7 +94,9 @@ eventManager.on("logout", async () => {
 
 
 eventManager.on("send message", async (data) => {
+    console.log(data)
     var user = await client.getNumberId(data.number)
+    console.log(user)
     if (user != null)
         client.sendMessage(user._serialized, data.message)
 })

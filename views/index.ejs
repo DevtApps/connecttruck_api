@@ -172,16 +172,14 @@
       "auth":{
         "key":"njd203h40n23s,w@-q3jq34nf02-dq3fd="
       },
-      "extraHeaders": {
-        "Authorization": "njd203h40n23s,w@-q3jq34nf02-dq3fd="
-      }
+     
     };
 
-    this.socket = io.connect('ws://185.235.130.158:4000',connectionOptions);
+    this.socket = io.connect('ws://localhost:4000',connectionOptions);
 
     var center = document.getElementsByClassName("center")[0]
     socket.on("status", (data) => {
-      console.log(data.qrcode)
+      console.log(data)
       center.innerHTML = ""
       switch (data.ready) {
         case "not_ready": {
@@ -224,7 +222,7 @@
 
     })
     socket.on("connect", (data) => {
-      console.log("CONNECTED");
+      
       socket.emit("status", "")
     })
     socket.on("disconnect", (data) => {
