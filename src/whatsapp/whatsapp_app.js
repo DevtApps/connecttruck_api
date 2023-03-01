@@ -103,13 +103,16 @@ eventManager.on("send message", async (data) => {
 
 eventManager.on("send image", async (data) => {
     var user = await client.getNumberId(data.number)
+    console.log(user)
     if (user != null) {
         if (data.image != null && data.image.toString().length > 0) {
             var media = new MessageMedia('image/png', data.image);
 
             await client.sendMessage(user._serialized, media, { caption: data.message })
+            console.log("send image")
         }else{
             await client.sendMessage(user._serialized, data.message)
+            console.log("send message")
         }
 
     }
