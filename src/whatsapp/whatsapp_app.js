@@ -102,6 +102,7 @@ eventManager.on("send message", async (data) => {
 })
 
 eventManager.on("send image", async (data) => {
+    
     var user = await client.getNumberId(data.number)
     console.log(user)
     if (user != null) {

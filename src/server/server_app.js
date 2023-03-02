@@ -55,7 +55,7 @@ io.on("connection", (socket) => {
     }
 })
 
-io.listen(4000)
+io.listen(8443)
 
 // View engine setup
 server.set('view engine', 'ejs');
