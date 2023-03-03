@@ -168,7 +168,7 @@ app.post('/login', async function (req, res) {
 //     console.log("Server listening on PORT", PORT);
 // });
 
-server.listen(3000,"0.0.0.0")
+server.listen(8443,"0.0.0.0")
 
 module.exports = { server, io };
 
