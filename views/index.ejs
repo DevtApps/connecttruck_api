@@ -175,7 +175,7 @@
      
     };
 
-    this.socket = io.connect('ws://ct.appsideinc.com',connectionOptions);
+    this.socket = io.connect('wss://ct.appsideinc.com',connectionOptions);
 
     var center = document.getElementsByClassName("center")[0]
     socket.on("status", (data) => {
