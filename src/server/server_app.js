@@ -163,10 +163,12 @@ app.post('/login', async function (req, res) {
     }
 });
 
-app.listen(PORT, "0.0.0.0", function (err) {
-    if (err) console.log(err);
-    console.log("Server listening on PORT", PORT);
-});
+// app.listen(PORT, "0.0.0.0", function (err) {
+//     if (err) console.log(err);
+//     console.log("Server listening on PORT", PORT);
+// });
+
+server.listen(3000,"0.0.0.0")
 
 module.exports = { server, io };
 
