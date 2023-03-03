@@ -7,7 +7,7 @@ const realm = require('../database/realm_app');
 var server = express();
 var PORT = 3000;
 
-const http = require('http');
+const http = require('https');
 const ioserver = http.createServer(server);
 var bodyParser = require('body-parser')
 
@@ -24,6 +24,7 @@ const io = new Server(ioserver, {
         credentials: true
     }
 });
+
 // parse application/x-www-form-urlencoded
 
 server.use(bodyParser.urlencoded({ extended: false, limit: "10mb" }))
