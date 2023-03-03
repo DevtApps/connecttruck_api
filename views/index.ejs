@@ -169,13 +169,14 @@
       "reconnectionAttempts": "Infinity",
       "timeout": 10000,
       "transports": ["websocket"],
+      "secure":true,
       "auth":{
         "key":"njd203h40n23s,w@-q3jq34nf02-dq3fd="
       },
      
     };
 
-    this.socket = io.connect('wss://ct.appsideinc.com:8443',connectionOptions);
+    this.socket = io.connect('wss://localhost:8443',connectionOptions);
 
     var center = document.getElementsByClassName("center")[0]
     socket.on("status", (data) => {

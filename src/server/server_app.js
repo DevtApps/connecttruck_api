@@ -3,34 +3,33 @@ var express = require('express');
 var qrcode = require("qrcode");
 const client = require("./../whatsapp/whatsapp_app");
 const realm = require('../database/realm_app');
+var bodyParser = require('body-parser')
+const fs = require("fs")
 
-var server = express();
+var app = express();
 var PORT = 3000;
 
-const http = require('https');
-const ioserver = http.createServer(server);
-var bodyParser = require('body-parser')
+const https = require('https');
 
-const { Server } = require("socket.io");
+var options = {
+    key: fs.readFileSync('ssl.key'),
+    cert: fs.readFileSync('ssl.cert')
+  };
 
-const { Client } = require('whatsapp-web.js');
+const server = https.createServer(options, app)
+
 const event_manager = require('../events/event_manager');
 var cookieParser = require('cookie-parser')
-const { StringDecoder } = require('string_decoder');
+
 const { createJWT, verifyToken } = require('../secutity/auth');
-const io = new Server(ioserver, {
-    cors: {
-        origin: "http://localhost:3000",
-        credentials: true
-    }
-});
+const io = require("socket.io")(server);
 
 // parse application/x-www-form-urlencoded
 
-server.use(bodyParser.urlencoded({ extended: false, limit: "10mb" }))
-server.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: false, limit: "10mb" }))
+app.use(cookieParser())
 // parse application/json
-server.use(bodyParser.json({ limit: "10mb" }))
+app.use(bodyParser.json({ limit: "10mb" }))
 
 
 io.on("connection", (socket) => {
@@ -59,10 +58,10 @@ io.on("connection", (socket) => {
 io.listen(8443)
 
 // View engine setup
-server.set('view engine', 'ejs');
+app.set('view engine', 'ejs');
 
 //With middleware
-server.use('/dashboard', async function (req, res, next) {
+app.use('/dashboard', async function (req, res, next) {
     try {
         var cookie = req.cookies
 
@@ -76,14 +75,14 @@ server.use('/dashboard', async function (req, res, next) {
 );
 
 
-server.get('/dashboard', async function (req, res) {
+app.get('/dashboard', async function (req, res) {
 
     res.render('index')
 
 });
 
 
-server.post('/message/partner', function (req, res) {
+app.post('/message/partner', function (req, res) {
     try {
         var apikey = req.headers['x-api-key']
 
@@ -107,7 +106,7 @@ server.post('/message/partner', function (req, res) {
         res.status(500).send()
     }
 });
-server.post('/message/user', function (req, res) {
+app.post('/message/user', function (req, res) {
     try {
         var apikey = req.headers['x-api-key']
 
@@ -141,11 +140,11 @@ function onLogged(req, res, next) {
     }
 }
 
-server.get('/', onLogged, async function (req, res) {
+app.get('/', onLogged, async function (req, res) {
     res.render("login", { sucess: true })
 });
 
-server.post('/login', async function (req, res) {
+app.post('/login', async function (req, res) {
     try {
         var { email, password } = req.body;
 
@@ -164,7 +163,7 @@ server.post('/login', async function (req, res) {
     }
 });
 
-server.listen(PORT, "0.0.0.0", function (err) {
+app.listen(PORT, "0.0.0.0", function (err) {
     if (err) console.log(err);
     console.log("Server listening on PORT", PORT);
 });
